@@ -72,7 +72,7 @@ describe('', function() {
 
     var requestWithSession = request.defaults({jar: true});
 
-var xbeforeEach = function(){};
+    var beforeEach = function(){
       // create a user that we can then log-in with
       new User({
           'username': 'Phillip',
@@ -91,7 +91,11 @@ var xbeforeEach = function(){};
         requestWithSession(options, function(error, res, body) {
           done();
         });
+          
       });
+
+    }
+
     });
 
     it('Only shortens valid urls, returning a 404 - Not found for invalid urls', function(done) {
@@ -102,6 +106,8 @@ var xbeforeEach = function(){};
           'url': 'definitely not a valid url'
         }
       };
+
+      var requestWithSession = request.defaults({jar: true});
 
       requestWithSession(options, function(error, res, body) {
         // res comes from the request module, and may not follow express conventions
@@ -121,6 +127,8 @@ var xbeforeEach = function(){};
         }
       };
 
+      var requestWithSession = request.defaults({jar: true});
+
       it('Responds with the short code', function(done) {
         requestWithSession(options, function(error, res, body) {
           expect(res.body.url).to.equal('http://www.github.com/');
@@ -136,6 +144,7 @@ var xbeforeEach = function(){};
             .then(function(urls) {
               if (urls['0'] && urls['0']['url']) {
                 var foundUrl = urls['0']['url'];
+                //console.log('FOUND URL BABY!!!: \n\n\n', foundUrl)
               }
               expect(foundUrl).to.equal('http://www.github.com/');
               done();
@@ -185,6 +194,8 @@ var xbeforeEach = function(){};
           }
         };
 
+      var requestWithSession = request.defaults({jar: true});
+
         requestWithSession(options, function(error, res, body) {
           var code = res.body.code;
           expect(code).to.equal(link.get('code'));
@@ -197,6 +208,8 @@ var xbeforeEach = function(){};
           'method': 'GET',
           'uri': 'http://127.0.0.1:4568/' + link.get('code')
         };
+
+        var requestWithSession = request.defaults({jar: true});
 
         requestWithSession(options, function(error, res, body) {
           var currentLocation = res.request.href;
@@ -211,6 +224,8 @@ var xbeforeEach = function(){};
           'uri': 'http://127.0.0.1:4568/links'
         };
 
+        var requestWithSession = request.defaults({jar: true});
+
         requestWithSession(options, function(error, res, body) {
           expect(body).to.include('"title":"GitHub · Where software is built"');
           expect(body).to.include('"code":"' + link.get('code') + '"');
@@ -222,7 +237,7 @@ var xbeforeEach = function(){};
 
   }); // 'Link creation'
 
-  xdescribe('Privileged Access:', function(){
+  describe('Privileged Access:', function(){
 
     it('Redirects to login page if a user tries to access the main page and is not signed in', function(done) {
       request('http://127.0.0.1:4568/', function(error, res, body) {
@@ -247,7 +262,7 @@ var xbeforeEach = function(){};
 
   }); // 'Priviledged Access'
 
-  xdescribe('Account Creation:', function(){
+  describe('Account Creation:', function(){
 
     it('Signup creates a user record', function(done) {
       var options = {
@@ -295,7 +310,7 @@ var xbeforeEach = function(){};
 
   }); // 'Account Creation'
 
-  xdescribe('Account Login:', function(){
+  describe('Account Login:', function(){
 
     var requestWithSession = request.defaults({jar: true});
 
@@ -342,4 +357,4 @@ var xbeforeEach = function(){};
 
   }); // 'Account Login'
 
-});
+// });

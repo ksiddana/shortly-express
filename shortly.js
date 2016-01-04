@@ -25,6 +25,7 @@ app.use(express.static(__dirname + '/public'));
 
 app.get('/', 
 function(req, res) {
+  console.log('USER SESSION BABY!!!!!!\n\n\n',req.session.user);
   res.render('index');
 });
 
@@ -74,11 +75,13 @@ function(req, res) {
   });
 });
 
+
 /************************************************************/
 // Write your dedicated authentication routes here
 // e.g. login, logout, etc.
 /************************************************************/
 
+//var login = "/login"
 
 
 /************************************************************/
