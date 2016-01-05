@@ -72,7 +72,7 @@ describe('', function() {
 
     var requestWithSession = request.defaults({jar: true});
 
-    var beforeEach = function(){
+  beforeEach (function(){
       // create a user that we can then log-in with
       new User({
           'username': 'Phillip',
@@ -89,13 +89,10 @@ describe('', function() {
         };
         // login via form and save session info
         requestWithSession(options, function(error, res, body) {
+          console.log('THIS IS THE RESPONSE!!!! INSIDE LINK CREATION!!',res)
           done();
         });
-          
       });
-
-    }
-
     });
 
     it('Only shortens valid urls, returning a 404 - Not found for invalid urls', function(done) {
@@ -106,8 +103,6 @@ describe('', function() {
           'url': 'definitely not a valid url'
         }
       };
-
-      var requestWithSession = request.defaults({jar: true});
 
       requestWithSession(options, function(error, res, body) {
         // res comes from the request module, and may not follow express conventions
@@ -127,8 +122,6 @@ describe('', function() {
         }
       };
 
-      var requestWithSession = request.defaults({jar: true});
-
       it('Responds with the short code', function(done) {
         requestWithSession(options, function(error, res, body) {
           expect(res.body.url).to.equal('http://www.github.com/');
@@ -137,6 +130,7 @@ describe('', function() {
         });
       });
 
+
       it('New links create a database entry', function(done) {
         requestWithSession(options, function(error, res, body) {
           db.knex('urls')
@@ -144,7 +138,6 @@ describe('', function() {
             .then(function(urls) {
               if (urls['0'] && urls['0']['url']) {
                 var foundUrl = urls['0']['url'];
-                //console.log('FOUND URL BABY!!!: \n\n\n', foundUrl)
               }
               expect(foundUrl).to.equal('http://www.github.com/');
               done();
@@ -184,6 +177,8 @@ describe('', function() {
         });
       });
 
+
+
       it('Returns the same shortened code', function(done) {
         var options = {
           'method': 'POST',
@@ -193,8 +188,6 @@ describe('', function() {
             'url': 'http://www.github.com/'
           }
         };
-
-      var requestWithSession = request.defaults({jar: true});
 
         requestWithSession(options, function(error, res, body) {
           var code = res.body.code;
@@ -209,10 +202,9 @@ describe('', function() {
           'uri': 'http://127.0.0.1:4568/' + link.get('code')
         };
 
-        var requestWithSession = request.defaults({jar: true});
-
         requestWithSession(options, function(error, res, body) {
           var currentLocation = res.request.href;
+          console.log("---------CURRENT LOCATION-", currentLocation);
           expect(currentLocation).to.equal('https://github.com/');
           done();
         });
@@ -223,8 +215,6 @@ describe('', function() {
           'method': 'GET',
           'uri': 'http://127.0.0.1:4568/links'
         };
-
-        var requestWithSession = request.defaults({jar: true});
 
         requestWithSession(options, function(error, res, body) {
           expect(body).to.include('"title":"GitHub · Where software is built"');
@@ -357,4 +347,4 @@ describe('', function() {
 
   }); // 'Account Login'
 
-// });
+});
