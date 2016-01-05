@@ -89,7 +89,7 @@ describe('', function() {
         };
         // login via form and save session info
         requestWithSession(options, function(error, res, body) {
-          console.log('THIS IS THE RESPONSE!!!! INSIDE LINK CREATION!!',res)
+          
           done();
         });
       });
@@ -265,7 +265,6 @@ describe('', function() {
       };
 //when we receive POST request to /signup, we must store username and pw to DB
       request(options, function(error, res, body) {
-        console.log('\n\n\nUSERS TABLE IN THE DATABASE!!!!\n\n\n', db.knex('users'));
         db.knex('users')
           .where('username', '=', 'Svnh')
           .then(function(res) {
@@ -321,7 +320,7 @@ describe('', function() {
         'json': {
           'username': 'Phillip',
           'password': 'Phillip'
-        }
+        } 
       };
 
       requestWithSession(options, function(error, res, body) {

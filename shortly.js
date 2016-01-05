@@ -51,6 +51,12 @@ app.get('/links', restrict, function(req, res) {
   });
 });
 
+app.get('/signup', restrict, function(req, res) {
+  Users.reset().fetch().then(function(users) {
+    res.send(200, users.models);
+  });
+});
+
 app.get('/login', function(req, res) {
   res.render('login');
 });
@@ -93,6 +99,53 @@ app.post('/links', function(req, res) {
 // Write your dedicated authentication routes here
 // e.g. login, logout, etc.
 /************************************************************/
+
+app.post('/signup', function(req, res) {
+  //var uri = req.body.url;
+  var username = req.body.username;
+  var password = req.body.password;
+  console.log("URI:-----------------", req.body);
+
+  // if (!util.isValidUrl(uri)) {
+  //   console.log('Not a valid url: ', uri);
+  //   return res.send(404);
+  // }
+
+  new User(req.body).fetch().then(function(found) {
+    if (found) {
+      res.send(200, found.attributes);
+    } else {
+          // console.log('Error reading URL heading: ', err);
+          // return res.send(404);
+        
+
+        var user = new User( req.body );
+
+        user.save().then(function(newUser) {
+          Users.add(newUser);
+          // res.send(200, newUser);
+          res.redirect('/');
+        });
+    }
+  });
+});
+
+app.post('/login', function(req, res) {
+
+
+  //var uri = req.body.url;
+  // var username = req.body.username;
+  // var password = req.body.password;
+  console.log("BODY:-----------------", req.body);
+
+  new User(req.body).fetch().then(function(found) {
+    if (found) {
+      res.redirect('/');
+    } else {
+         res.redirect('/login');
+    }  
+  });
+});
 
 
 
