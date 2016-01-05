@@ -45,5 +45,14 @@ db.knex.schema.hasTable('clicks').then(function(exists) {
 // Add additional schema definitions below
 /************************************************************/
 
+// Bookshelf.conn.knex.schema.createTable('customers', function (customer) {
+//     customer.string('name')
+// }).then(function () {
+
+db.knex.schema.createTable('users', function (user) {
+  user.string('username');
+  user.string('password');
+});
+
 
 module.exports = db;
